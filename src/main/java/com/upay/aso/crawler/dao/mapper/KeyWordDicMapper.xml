@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.upay.aso.crawler.dao.KeyWordDicDao" >
+  <resultMap id="BaseResultMap" type="com.upay.aso.crawler.entity.KeyWordDic" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="keyword" property="keyword" jdbcType="VARCHAR" />
+    <result column="keywordId" property="keywordid" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, keyword, keywordId
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_capture_keyword_dic
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tbl_capture_keyword_dic
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.upay.aso.crawler.entity.KeyWordDic" >
+    insert into tbl_capture_keyword_dic (id, keyword, keywordId
+      )
+    values (#{id,jdbcType=INTEGER}, #{keyword,jdbcType=VARCHAR}, #{keywordid,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.upay.aso.crawler.entity.KeyWordDic" >
+    insert into tbl_capture_keyword_dic
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="keyword != null" >
+        keyword,
+      </if>
+      <if test="keywordid != null" >
+        keywordId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="keyword != null" >
+        #{keyword,jdbcType=VARCHAR},
+      </if>
+      <if test="keywordid != null" >
+        #{keywordid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.upay.aso.crawler.entity.KeyWordDic" >
+    update tbl_capture_keyword_dic
+    <set >
+      <if test="keyword != null" >
+        keyword = #{keyword,jdbcType=VARCHAR},
+      </if>
+      <if test="keywordid != null" >
+        keywordId = #{keywordid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.upay.aso.crawler.entity.KeyWordDic" >
+    update tbl_capture_keyword_dic
+    set keyword = #{keyword,jdbcType=VARCHAR},
+      keywordId = #{keywordid,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectKeywordIdByKeyword" parameterType="string" resultType="string">
+  	select 
+    	keywordId
+    from 
+    	tbl_capture_keyword_dic
+    where 
+    	keyword = #{keyword}
+  </select>
+</mapper>

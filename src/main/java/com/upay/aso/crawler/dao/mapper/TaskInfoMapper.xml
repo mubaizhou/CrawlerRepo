@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.upay.aso.crawler.dao.TaskInfoDao" >
+  <resultMap id="BaseResultMap" type="com.upay.aso.crawler.entity.TaskInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="taskId" property="taskid" jdbcType="INTEGER" />
+    <result column="appID" property="appid" jdbcType="VARCHAR" />
+    <result column="keyword" property="keyword" jdbcType="VARCHAR" />
+    <result column="keywordId" property="keywordid" jdbcType="VARCHAR" />
+    <result column="ctime" property="ctime" jdbcType="TIMESTAMP" />
+    <result column="startTime" property="starttime" jdbcType="TIMESTAMP" />
+    <result column="endTime" property="endtime" jdbcType="TIMESTAMP" />
+    <result column="interval" property="interval" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, taskId, appID, keyword, keywordId,ctime, startTime, endTime, interval
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_capture_task
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tbl_capture_task
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.upay.aso.crawler.entity.TaskInfo" >
+    insert into tbl_capture_task (id, taskId, appID, 
+      keyword, keywordId,ctime, startTime, 
+      endTime, interval)
+    values (#{id,jdbcType=INTEGER}, #{taskid,jdbcType=INTEGER}, #{appid,jdbcType=VARCHAR}, 
+      #{keyword,jdbcType=VARCHAR}, #{keywordid,jdbcType=VARCHAR}, #{ctime,jdbcType=TIMESTAMP}, #{starttime,jdbcType=TIMESTAMP}, 
+      #{endtime,jdbcType=TIMESTAMP}, #{interval,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.upay.aso.crawler.entity.TaskInfo" >
+    insert into tbl_capture_task
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="taskid != null" >
+        taskId,
+      </if>
+      <if test="appid != null" >
+        appID,
+      </if>
+      <if test="keyword != null" >
+        keyword,
+      </if>
+      <if test="keywordid != null" >
+        keywordId,
+      </if>
+      <if test="ctime != null" >
+        ctime,
+      </if>
+      <if test="starttime != null" >
+        startTime,
+      </if>
+      <if test="endtime != null" >
+        endTime,
+      </if>
+      <if test="interval != null" >
+        interval,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="taskid != null" >
+        #{taskid,jdbcType=INTEGER},
+      </if>
+      <if test="appid != null" >
+        #{appid,jdbcType=VARCHAR},
+      </if>
+      <if test="keyword != null" >
+        #{keyword,jdbcType=VARCHAR},
+      </if>
+      <if test="keywordid != null" >
+        #{keywordid,jdbcType=VARCHAR},
+      </if>
+      <if test="ctime != null" >
+        #{ctime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="starttime != null" >
+        #{starttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endtime != null" >
+        #{endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="interval != null" >
+        #{interval,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.upay.aso.crawler.entity.TaskInfo" >
+    update tbl_capture_task
+    <set >
+      <if test="taskid != null" >
+        taskId = #{taskid,jdbcType=INTEGER},
+      </if>
+      <if test="appid != null" >
+        appID = #{appid,jdbcType=VARCHAR},
+      </if>
+      <if test="keyword != null" >
+        keyword = #{keyword,jdbcType=VARCHAR},
+      </if>
+      <if test="keywordid != null" >
+        keywordId = #{keywordid,jdbcType=VARCHAR},
+      </if>
+      <if test="ctime != null" >
+        ctime = #{ctime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="starttime != null" >
+        startTime = #{starttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endtime != null" >
+        endTime = #{endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="interval != null" >
+        interval = #{interval,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.upay.aso.crawler.entity.TaskInfo" >
+    update tbl_capture_task
+    set taskId = #{taskid,jdbcType=INTEGER},
+      appID = #{appid,jdbcType=VARCHAR},
+      keyword = #{keyword,jdbcType=VARCHAR},
+      keywordId = #{keywordid,jdbcType=VARCHAR},
+      ctime = #{ctime,jdbcType=TIMESTAMP},
+      startTime = #{starttime,jdbcType=TIMESTAMP},
+      endTime = #{endtime,jdbcType=TIMESTAMP},
+      interval = #{interval,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectAvailableTasks" resultMap="BaseResultMap">
+  	select * from tbl_capture_task  tct where <![CDATA[ tct.startTime <= SYSDATE() and tct.endTime >= SYSDATE() ]]>;
+  </select>
+  
+  <update id="updateKeywordId" parameterType="com.upay.aso.crawler.entity.TaskInfo">
+  	update tbl_capture_task
+  	<set >
+      <if test="keywordid != null" >
+        keywordId = #{keywordid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <where>
+    	taskId = #{taskid,jdbcType=INTEGER} 
+    	and
+    	appID = #{appid,jdbcType=VARCHAR}
+    	and
+    	keyword = #{keyword,jdbcType=VARCHAR}
+    </where>
+  </update>
+</mapper>
